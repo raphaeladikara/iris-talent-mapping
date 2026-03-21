@@ -595,8 +595,12 @@ function launchApp(admin) {
   isAdmin = admin;
   document.getElementById('auth-screen').style.display = 'none';
   document.getElementById('app').style.display = 'block';
-  // Apply role visibility
-  document.querySelectorAll('.admin-only').forEach(el => el.style.display = admin ? '' : 'none');
+  // Apply role visibility — explicitly set flex (not '' which falls back to block)
+  document.querySelectorAll('.admin-only').forEach(el => {
+    if (!admin) { el.style.display = 'none'; return; }
+    const tag = el.tagName.toLowerCase();
+    el.style.display = (tag === 'button') ? 'flex' : 'block';
+  });
   // User chip
   const av = document.getElementById('uc-avatar');
   const nm = document.getElementById('uc-name');
