@@ -230,6 +230,48 @@ tbody tr:hover td { background: var(--bg); }
 .spin { display: inline-block; width: 18px; height: 18px; border: 2px solid var(--border); border-top-color: var(--blue); border-radius: 50%; animation: spin .6s linear infinite; }
 @keyframes spin { to { transform: rotate(360deg); } }
 
+
+/* ===== DARK MODE ===== */
+[data-theme="dark"] {
+  --blue: #3B82F6; --blue-dark: #2563EB; --blue-light: #1e3a5f; --blue-mid: #1e3a5f;
+  --surface: #1E2330; --bg: #141720; --bg2: #252A38;
+  --border: #2E3447; --border-strong: #3A4057;
+  --text: #F1F5F9; --text-2: #94A3B8; --text-3: #64748B;
+  --green: #34D399; --green-bg: #0d2e22;
+  --amber: #FBBF24; --amber-bg: #2d1f07;
+  --purple: #A78BFA; --purple-bg: #1e1535;
+  --red: #F87171; --red-bg: #2d1010;
+  --shadow: 0 1px 3px rgba(0,0,0,.3), 0 1px 2px rgba(0,0,0,.2);
+  --shadow-md: 0 4px 12px rgba(0,0,0,.4), 0 2px 4px rgba(0,0,0,.3);
+  --shadow-lg: 0 20px 60px rgba(0,0,0,.5);
+}
+[data-theme="dark"] .guest-hero {
+  background: linear-gradient(135deg, #1a3a6e 0%, #1e3a8a 60%, #1d4ed8 100%);
+}
+[data-theme="dark"] .auth-submit { background: #3B82F6; }
+[data-theme="dark"] .stat-card.accent { background: #1D4ED8; border-color: #1D4ED8; }
+[data-theme="dark"] .tag-daftar { background: #1e3a5f; color: #93c5fd; }
+[data-theme="dark"] .tag-uni { background: #252A38; color: var(--text-2); }
+[data-theme="dark"] select option, [data-theme="dark"] select optgroup { background: #1E2330; color: #F1F5F9; }
+[data-theme="dark"] .rb.sel { background: #2563EB; border-color: #2563EB; }
+[data-theme="dark"] .user-chip { background: #252A38; }
+[data-theme="dark"] .user-chip:hover { background: #2E3447; }
+[data-theme="dark"] .admin-badge { background: #2d1f07; color: #FBBF24; }
+
+/* Dark mode toggle button */
+.theme-toggle {
+  width: 34px; height: 34px; border-radius: 8px;
+  border: 1px solid var(--border-strong); background: var(--bg2);
+  cursor: pointer; display: flex; align-items: center; justify-content: center;
+  color: var(--text-2); transition: all .15s; flex-shrink: 0;
+}
+.theme-toggle:hover { background: var(--border); color: var(--text); }
+.theme-toggle svg { width: 15px; height: 15px; }
+.icon-sun { display: none; }
+.icon-moon { display: block; }
+[data-theme="dark"] .icon-sun { display: block; }
+[data-theme="dark"] .icon-moon { display: none; }
+
 @media (max-width: 900px) {
   .sidebar { transform: translateX(-100%); transition: transform .25s; }
   .sidebar.open { transform: translateX(0); }
@@ -243,7 +285,11 @@ tbody tr:hover td { background: var(--bg); }
 <body>
 
 <!-- AUTH SCREEN -->
-<div class="auth-screen" id="auth-screen">
+<div class="auth-screen" id="auth-screen" style="position:relative">
+  <button class="theme-toggle" onclick="toggleTheme()" title="Toggle dark mode" style="position:absolute;top:20px;right:20px">
+    <svg class="icon-moon" viewBox="0 0 20 20" fill="currentColor"><path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"/></svg>
+    <svg class="icon-sun" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z" clip-rule="evenodd"/></svg>
+  </button>
   <div class="auth-card">
     <div class="auth-iris">IRIS <div class="auth-iris-dot"></div></div>
     <div class="auth-tagline">Talent Mapping · FTMM Universitas Airlangga</div>
@@ -336,6 +382,10 @@ tbody tr:hover td { background: var(--bg); }
         <button class="btn-secondary admin-only" onclick="refreshData()">
           <svg width="13" height="13" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M1 4v6h6"/><path d="M19 16v-6h-6"/><path d="M17.5 9A7.5 7.5 0 0 0 5.2 5.2L1 10M19 10l-4.2 4.8a7.5 7.5 0 0 1-12.3-3.8"/></svg>
           Refresh
+        </button>
+        <button class="theme-toggle" onclick="toggleTheme()" title="Toggle dark mode">
+          <svg class="icon-moon" viewBox="0 0 20 20" fill="currentColor"><path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"/></svg>
+          <svg class="icon-sun" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z" clip-rule="evenodd"/></svg>
         </button>
       </div>
     </div>
@@ -841,6 +891,22 @@ function renderAnalytics() {
 // ===== UTILS =====
 function groupBy(arr,key){return arr.reduce((acc,e)=>{acc[e[key]]=(acc[e[key]]||0)+1;return acc;},{});}
 function showToast(msg,type=''){const t=document.getElementById('toast');t.textContent=msg;t.className='toast '+type+' show';setTimeout(()=>t.classList.remove('show'),3000);}
+
+// ===== DARK MODE =====
+function toggleTheme() {
+  const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+  const next = isDark ? 'light' : 'dark';
+  document.documentElement.setAttribute('data-theme', next);
+  localStorage.setItem('iris_theme', next);
+}
+// Apply saved theme on load
+(function() {
+  const saved = localStorage.getItem('iris_theme');
+  const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+  if (saved === 'dark' || (!saved && prefersDark)) {
+    document.documentElement.setAttribute('data-theme', 'dark');
+  }
+})();
 </script>
 </body>
 </html>
