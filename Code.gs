@@ -67,7 +67,7 @@ function getData() {
 
 function addEntry(payload) {
   const sheet = getOrCreateSheet();
-  const ts = new Date().toISOString();
+  const ts = payload.ts || new Date().toISOString();
   sheet.appendRow([
     ts,
     payload.divisi || "",
@@ -82,7 +82,7 @@ function addEntry(payload) {
 
 function addEntries(payloadArray) {
   const sheet = getOrCreateSheet();
-  const ts = new Date().toISOString();
+  const ts = (payloadArray.length > 0 && payloadArray[0].ts) ? payloadArray[0].ts : new Date().toISOString();
   if (Array.isArray(payloadArray) && payloadArray.length > 0) {
     const rows = payloadArray.map(payload => [
       ts,

@@ -1948,7 +1948,8 @@
                 <div class="step-body">
                   <div class="step-title">Buka Apps Script</div>
                   <div class="step-desc">Klik <code>Extensions → Apps Script</code>. Hapus semua kode, paste isi file
-                    <code>Code.gs</code>, lalu save.</div>
+                    <code>Code.gs</code>, lalu save.
+                  </div>
                 </div>
               </div>
               <div class="setup-step">
@@ -2252,7 +2253,8 @@
       const btn = document.getElementById('submit-btn');
       btn.disabled = true; btn.innerHTML = '<span class="spin"></span> Menyimpan...';
 
-      const payload = membersToSubmit.map(m => ({ divisi: m.divisi, nama: m.nama, kategori, katLomba, namaLomba, juara }));
+      const sharedTs = new Date().toISOString();
+      const payload = membersToSubmit.map(m => ({ divisi: m.divisi, nama: m.nama, kategori, katLomba, namaLomba, juara, ts: sharedTs }));
 
       let res;
       if (payload.length === 1) {
@@ -2293,7 +2295,7 @@
 
     // ===== DASHBOARD =====
     function renderDashboard() {
-      const uniqueTeams = new Set(DB.map(e => e.ts || e.rowIndex)).size;
+      const uniqueTeams = countUniqueTeams(DB);
       const wins = DB.filter(e => e.kategori === 'Menang').length;
       const members = [...new Set(DB.map(e => e.nama))].length, lomba = [...new Set(DB.map(e => e.namaLomba))].length;
       document.getElementById('dash-stats').innerHTML = [['accent', uniqueTeams, 'Pendaftar (Tim/Indv)'], ['', members, 'Anggota Aktif'], ['', lomba, 'Jenis Lomba'], ['', wins, 'Total Kemenangan']].map(([c, n, l]) => `<div class="stat-card ${c}"><div class="stat-num">${n}</div><div class="stat-label">${l}</div></div>`).join('');
@@ -2365,24 +2367,18 @@
       const tb = document.getElementById('tbody-lomba');
       if (!lomba.length) { tb.innerHTML = '<tr><td colspan="3" style="text-align:center;color:var(--text-3);padding:40px">Belum ada data lomba</td></tr>'; return; }
       tb.innerHTML = lomba.map(l => {
-        const teamsObj = {};
-        l.entries.forEach(e => {
-           const tKey = e.ts || e.rowIndex;
-           if (!teamsObj[tKey]) teamsObj[tKey] = [];
-           teamsObj[tKey].push(e);
-        });
-        const teams = Object.values(teamsObj);
+        const teams = groupEntriesByTeam(l.entries);
         const kt = l.katLomba === 'Nasional' ? 'tag-nasional' : l.katLomba === 'Internasional' ? 'tag-intl' : 'tag-uni';
-        
+
         let teamHtml = `<div style="display:flex; flex-direction:column; gap:8px;">`;
         teams.forEach((t, i) => {
-            const isTeam = t.length > 1;
-            const label = isTeam ? `Tim ${i+1}` : `Individu`;
-            const members = t.map(e => {
-                let j = e.juara ? ` <span class="tag tag-juara" style="font-size:9px; padding:1px 4px; border-radius:4px; margin-left:4px">${e.juara}</span>` : '';
-                return `<div style="display:flex; align-items:center; margin-bottom:2px"><span style="color:var(--blue);margin-right:6px">•</span> ${e.nama}${j}</div>`;
-            }).join('');
-            teamHtml += `
+          const isTeam = t.length > 1;
+          const label = isTeam ? `Tim ${i + 1}` : `Individu`;
+          const members = t.map(e => {
+            let j = e.juara ? ` <span class="tag tag-juara" style="font-size:9px; padding:1px 4px; border-radius:4px; margin-left:4px">${e.juara}</span>` : '';
+            return `<div style="display:flex; align-items:center; margin-bottom:2px"><span style="color:var(--blue);margin-right:6px">•</span> ${e.nama}${j}</div>`;
+          }).join('');
+          teamHtml += `
             <div style="background:var(--bg2); border:1px solid var(--border); border-radius:6px; padding:8px 12px;">
                 <div style="font-size:11px; font-weight:600; color:var(--text-2); margin-bottom:6px; text-transform:uppercase; letter-spacing:0.05em">${label}</div>
                 <div style="font-size:12px;">${members}</div>
@@ -2400,7 +2396,7 @@
 
     // ===== ANALYTICS =====
     function renderAnalytics() {
-      const uniqueTeams = new Set(DB.map(e => e.ts || e.rowIndex)).size;
+      const uniqueTeams = countUniqueTeams(DB);
       const wins = DB.filter(e => e.kategori === 'Menang').length;
       const members = [...new Set(DB.map(e => e.nama))].length, lomba = [...new Set(DB.map(e => e.namaLomba))].length, intl = DB.filter(e => e.katLomba === 'Internasional').length;
       document.getElementById('analytics-stats').innerHTML = [['', uniqueTeams, 'Pendaftar (Tim/Indv)'], ['', members, 'Anggota Aktif'], ['', lomba, 'Jenis Lomba'], ['accent', wins, 'Total Kemenangan'], ['', intl, 'Lomba Internasional']].map(([c, n, l]) => `<div class="stat-card ${c}"><div class="stat-num">${n}</div><div class="stat-label">${l}</div></div>`).join('');
@@ -2413,6 +2409,45 @@
     }
 
     // ===== UTILS =====
+    function groupEntriesByTeam(entries) {
+      const sorted = [...entries].sort((a, b) => {
+        const tA = a.ts ? new Date(a.ts).getTime() : a.rowIndex;
+        const tB = b.ts ? new Date(b.ts).getTime() : b.rowIndex;
+        return tA - tB;
+      });
+      const teams = [];
+      let currentTeam = [];
+      let currentTeamTime = null;
+      sorted.forEach(e => {
+        const eTime = e.ts ? new Date(e.ts).getTime() : null;
+        if (!currentTeam.length) {
+          currentTeam.push(e);
+          currentTeamTime = eTime;
+        } else {
+          if (eTime !== null && currentTeamTime !== null && Math.abs(eTime - currentTeamTime) < 10000) {
+            currentTeam.push(e);
+          } else {
+            teams.push(currentTeam);
+            currentTeam = [e];
+            currentTeamTime = eTime;
+          }
+        }
+      });
+      if (currentTeam.length) teams.push(currentTeam);
+      return teams;
+    }
+    function countUniqueTeams(dbArray) {
+      const groupedLomba = {};
+      dbArray.forEach(e => {
+        const key = e.namaLomba + '||' + e.katLomba;
+        if (!groupedLomba[key]) groupedLomba[key] = [];
+        groupedLomba[key].push(e);
+      });
+      let total = 0;
+      Object.values(groupedLomba).forEach(entries => total += groupEntriesByTeam(entries).length);
+      return total;
+    }
+
     function groupBy(arr, key) { return arr.reduce((acc, e) => { acc[e[key]] = (acc[e[key]] || 0) + 1; return acc; }, {}); }
     function showToast(msg, type = '') { const t = document.getElementById('toast'); t.textContent = msg; t.className = 'toast ' + type + ' show'; setTimeout(() => t.classList.remove('show'), 3000); }
 
