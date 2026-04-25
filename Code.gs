@@ -26,6 +26,7 @@ function doPost(e) {
   try {
     const data = JSON.parse(e.postData.contents);
     if (data.action === "addEntry") result = addEntry(data.payload);
+    else if (data.action === "addEntries") result = addEntries(data.payload);
     else if (data.action === "deleteEntry") result = deleteEntry(data.rowIndex);
     else result = { error: "Unknown action" };
   } catch (err) {
@@ -77,6 +78,25 @@ function addEntry(payload) {
     payload.juara || ""
   ]);
   return { success: true, timestamp: ts };
+}
+
+function addEntries(payloadArray) {
+  const sheet = getOrCreateSheet();
+  const ts = new Date().toISOString();
+  if (Array.isArray(payloadArray) && payloadArray.length > 0) {
+    const rows = payloadArray.map(payload => [
+      ts,
+      payload.divisi || "",
+      payload.nama || "",
+      payload.kategori || "",
+      payload.katLomba || "",
+      payload.namaLomba || "",
+      payload.juara || ""
+    ]);
+    sheet.getRange(sheet.getLastRow() + 1, 1, rows.length, rows[0].length).setValues(rows);
+    return { success: true, timestamp: ts, count: rows.length };
+  }
+  return { error: "Invalid payload" };
 }
 
 function deleteEntry(rowIndex) {
