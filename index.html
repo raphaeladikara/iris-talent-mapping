@@ -1711,40 +1711,69 @@
                     </div>
                   </div>
                   <div class="field full">
-                    <label>Anggota Lomba (Bisa pilih lebih dari 1 untuk Tim)</label>
+                    <label>Anggota Tim Lomba <span
+                        style="font-weight:400;color:var(--text-3);text-transform:none;letter-spacing:0">(wajib tambah
+                        minimal 1 anggota)</span></label>
                     <div id="team-members" style="display:none;gap:6px;flex-wrap:wrap;margin-bottom:8px"></div>
-                    <div style="display:flex;gap:12px;flex-wrap:wrap">
-                      <select id="f-divisi" onchange="updateNama()" style="flex:1;min-width:140px">
-                        <option value="">— Pilih Divisi —</option>
-                        <optgroup label="── Pengurus Inti ──">
-                          <option>President</option>
-                          <option>Vice President</option>
-                          <option>Secretary</option>
-                          <option>Treasurer</option>
-                          <option>Director of Research and Development</option>
-                          <option>Director of Human Resources</option>
-                          <option>Director of Public Relations</option>
-                          <option>Director of Creative and Media</option>
-                          <option>Competition Manager</option>
-                          <option>Project Manager</option>
-                        </optgroup>
-                        <optgroup label="── Divisi ──">
-                          <option>Creative and Media</option>
-                          <option>Human Resources</option>
-                          <option>Public Relations</option>
-                          <option>Researcher</option>
-                        </optgroup>
-                      </select>
-                      <select id="f-nama" style="flex:1;min-width:140px">
-                        <option value="">— Pilih Divisi dulu —</option>
-                      </select>
-                      <button class="btn-secondary" type="button" onclick="addMemberToTeam()" style="flex-shrink:0">
-                        <svg width="14" height="14" viewBox="0 0 20 20" fill="none" stroke="currentColor"
-                          stroke-width="2">
-                          <line x1="10" y1="5" x2="10" y2="15" />
-                          <line x1="5" y1="10" x2="15" y2="10" />
-                        </svg> Tambah
-                      </button>
+                    <!-- Tambah Anggota IRIS -->
+                    <div
+                      style="background:var(--bg2);border:1px solid var(--border);border-radius:8px;padding:12px;margin-bottom:8px">
+                      <div
+                        style="font-size:11px;font-weight:600;color:var(--text-2);text-transform:uppercase;letter-spacing:.05em;margin-bottom:8px">
+                        ➕ Anggota IRIS</div>
+                      <div style="display:flex;gap:8px;flex-wrap:wrap">
+                        <select id="f-divisi" onchange="updateNama()" style="flex:1;min-width:130px">
+                          <option value="">— Pilih Divisi —</option>
+                          <optgroup label="── Pengurus Inti ──">
+                            <option>President</option>
+                            <option>Vice President</option>
+                            <option>Secretary</option>
+                            <option>Treasurer</option>
+                            <option>Director of Research and Development</option>
+                            <option>Director of Human Resources</option>
+                            <option>Director of Public Relations</option>
+                            <option>Director of Creative and Media</option>
+                            <option>Competition Manager</option>
+                            <option>Project Manager</option>
+                          </optgroup>
+                          <optgroup label="── Divisi ──">
+                            <option>Creative and Media</option>
+                            <option>Human Resources</option>
+                            <option>Public Relations</option>
+                            <option>Researcher</option>
+                          </optgroup>
+                        </select>
+                        <select id="f-nama" style="flex:1;min-width:130px">
+                          <option value="">— Pilih Divisi dulu —</option>
+                        </select>
+                        <button class="btn-secondary" type="button" onclick="addMemberToTeam()" style="flex-shrink:0">
+                          <svg width="14" height="14" viewBox="0 0 20 20" fill="none" stroke="currentColor"
+                            stroke-width="2">
+                            <line x1="10" y1="5" x2="10" y2="15" />
+                            <line x1="5" y1="10" x2="15" y2="10" />
+                          </svg> Tambah
+                        </button>
+                      </div>
+                    </div>
+                    <!-- Tambah Non-Irisian -->
+                    <div style="background:var(--amber-bg);border:1px solid #FDE68A;border-radius:8px;padding:12px">
+                      <div
+                        style="font-size:11px;font-weight:600;color:var(--amber);text-transform:uppercase;letter-spacing:.05em;margin-bottom:8px">
+                        👤 Non-Irisian (Luar IRIS)</div>
+                      <div style="display:flex;gap:8px;flex-wrap:wrap">
+                        <input type="text" id="f-nonirisian-nama" placeholder="Nama lengkap..."
+                          style="flex:2;min-width:150px;padding:8px 12px;border:1px solid #FDE68A;border-radius:8px;background:var(--surface);font-size:13px;font-family:inherit;outline:none">
+                        <input type="text" id="f-nonirisian-role" placeholder="Jabatan / Asal (opsional)"
+                          style="flex:2;min-width:150px;padding:8px 12px;border:1px solid #FDE68A;border-radius:8px;background:var(--surface);font-size:13px;font-family:inherit;outline:none">
+                        <button class="btn-secondary" type="button" onclick="addNonIrisianToTeam()"
+                          style="flex-shrink:0;border-color:#FDE68A;color:var(--amber)">
+                          <svg width="14" height="14" viewBox="0 0 20 20" fill="none" stroke="currentColor"
+                            stroke-width="2">
+                            <line x1="10" y1="5" x2="10" y2="15" />
+                            <line x1="5" y1="10" x2="15" y2="10" />
+                          </svg> Tambah
+                        </button>
+                      </div>
                     </div>
                   </div>
                   <div class="field full">
@@ -1762,11 +1791,15 @@
                   </div>
                   <div class="field full" id="f-namaPilih" style="display:none">
                     <label>Nama Lomba</label>
-                    <select id="sel-namaLomba">
-                      <option>Satria Data</option>
-                      <option>Gemastik</option>
-                      <option>LIDM</option>
+                    <select id="sel-namaLomba" onchange="updateCabang()">
+                      <option value="Satria Data">Satria Data</option>
+                      <option value="Gemastik">Gemastik</option>
+                      <option value="LIDM">LIDM</option>
                     </select>
+                  </div>
+                  <div class="field full" id="f-cabang" style="display:none">
+                    <label>Cabang Lomba</label>
+                    <select id="sel-cabang"></select>
                   </div>
                   <div class="field full" id="f-juara" style="display:none">
                     <label>Juara</label>
@@ -1904,27 +1937,60 @@
         <div class="page" id="page-analytics">
           <div class="section-header">
             <h1>Analytics</h1>
-          </div>
-          <div class="stats-grid" id="analytics-stats"></div>
-          <div class="charts-row">
-            <div class="card">
-              <div class="card-header">
-                <div class="chart-title">Partisipasi per Divisi</div>
-              </div>
-              <div class="card-body" id="an-chart-div"></div>
-            </div>
-            <div class="card">
-              <div class="card-header">
-                <div class="chart-title">Distribusi Kategori</div>
-              </div>
-              <div class="card-body" id="an-chart-kat"></div>
+            <div style="margin-left:auto;display:flex;gap:8px">
+              <button class="btn-secondary" id="an-tab-overview" onclick="switchAnTab('overview')"
+                style="font-weight:600">Overview</button>
+              <button class="btn-secondary" id="an-tab-detail" onclick="switchAnTab('detail')">Detail Lomba</button>
             </div>
           </div>
-          <div class="card">
-            <div class="card-header">
-              <div class="chart-title">Anggota — Total vs Kemenangan</div>
+
+          <!-- TAB: OVERVIEW -->
+          <div id="an-pane-overview">
+            <div class="stats-grid" id="analytics-stats"></div>
+            <div class="charts-row">
+              <div class="card">
+                <div class="card-header">
+                  <div class="chart-title">Partisipasi per Divisi</div>
+                </div>
+                <div class="card-body" id="an-chart-div"></div>
+              </div>
+              <div class="card">
+                <div class="card-header">
+                  <div class="chart-title">Distribusi Tingkat Lomba</div>
+                </div>
+                <div class="card-body" id="an-chart-kat"></div>
+              </div>
             </div>
-            <div class="card-body" id="an-chart-wins"></div>
+            <div class="card">
+              <div class="card-header">
+                <div class="chart-title">Anggota — Total vs Kemenangan</div>
+              </div>
+              <div class="card-body" id="an-chart-wins"></div>
+            </div>
+          </div>
+
+          <!-- TAB: DETAIL LOMBA -->
+          <div id="an-pane-detail" style="display:none">
+            <!-- Filter toolbar -->
+            <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px;align-items:center">
+              <input type="text" id="an-srch" placeholder="🔍 Cari nama lomba..." oninput="renderAnalyticsLombaDetail()"
+                style="padding:8px 12px;border:1px solid var(--border-strong);border-radius:8px;background:var(--surface);font-size:12px;color:var(--text);outline:none;font-family:inherit;flex:1;min-width:160px">
+              <select id="an-fil-tingkat" onchange="renderAnalyticsLombaDetail()"
+                style="padding:8px 12px;border:1px solid var(--border-strong);border-radius:8px;background:var(--surface);font-size:12px;color:var(--text);outline:none;font-family:inherit">
+                <option value="">Semua Tingkat</option>
+                <option>Antar Universitas</option>
+                <option>Nasional</option>
+                <option>Internasional</option>
+              </select>
+              <select id="an-fil-hasil" onchange="renderAnalyticsLombaDetail()"
+                style="padding:8px 12px;border:1px solid var(--border-strong);border-radius:8px;background:var(--surface);font-size:12px;color:var(--text);outline:none;font-family:inherit">
+                <option value="">Daftar &amp; Menang</option>
+                <option value="Menang">Menang saja</option>
+              </select>
+              <span id="an-lomba-count" style="font-size:12px;color:var(--text-3)"></span>
+            </div>
+            <!-- Cards container -->
+            <div id="an-lomba-detail"></div>
           </div>
         </div>
 
@@ -2203,6 +2269,7 @@
         const nat = el.dataset.val === 'Nasional';
         document.getElementById('f-namaInput').style.display = nat ? 'none' : 'block';
         document.getElementById('f-namaPilih').style.display = nat ? 'block' : 'none';
+        if (nat) updateCabang(); else document.getElementById('f-cabang').style.display = 'none';
       }
     }
     function getRb(grp) { const el = document.querySelector(`#rg-${grp} .rb.sel`); return el ? el.dataset.val : ''; }
@@ -2214,16 +2281,60 @@
       (MEMBERS[div] || []).forEach(n => { const o = document.createElement('option'); o.value = n; o.textContent = n; sel.appendChild(o); });
     }
 
+    const CABANG_OPTIONS = {
+      'Satria Data': [
+        'National Statistics Competition (NSC)',
+        'Big Data Challenge (BDC)',
+        'Statistics Essay Competition (SEC)',
+        'Statistics Infographics Competition (SIC)'
+      ],
+      'Gemastik': [
+        'Pemrograman (Programming)',
+        'Keamanan Siber (Cyber Security)',
+        'Penambangan Data (Data Mining)',
+        'Desain Pengalaman Pengguna (UX Design)',
+        'Animasi (Animation)',
+        'Kota Cerdas (Smart City)',
+        'Karya Tulis Ilmiah TIK (ICT Scientific Paper)',
+        'Pengembangan Aplikasi Permainan (Game Development)',
+        'Pengembangan Perangkat Lunak (Software Development)',
+        'Piranti Cerdas, IoT, dan Sistem Tertanam (Smart Device, IoT & Embedded Systems)'
+      ]
+    };
+    function updateCabang() {
+      const lomba = document.getElementById('sel-namaLomba').value;
+      const cabangField = document.getElementById('f-cabang');
+      const cabangSel = document.getElementById('sel-cabang');
+      const opts = CABANG_OPTIONS[lomba];
+      if (opts) {
+        cabangSel.innerHTML = opts.map(o => `<option value="${o}">${o}</option>`).join('');
+        cabangField.style.display = 'block';
+      } else {
+        cabangField.style.display = 'none';
+        cabangSel.innerHTML = '';
+      }
+    }
+
     let teamMembers = [];
     function addMemberToTeam() {
       const div = document.getElementById('f-divisi').value;
       const nm = document.getElementById('f-nama').value;
       if (!div || !nm) return;
       if (teamMembers.find(m => m.nama === nm)) { showToast('Anggota sudah ada di list', 'error'); return; }
-      teamMembers.push({ divisi: div, nama: nm });
+      teamMembers.push({ divisi: div, nama: nm, nonIrisian: false });
       renderTeamMembers();
       document.getElementById('f-divisi').value = '';
       document.getElementById('f-nama').innerHTML = '<option value="">— Pilih Divisi dulu —</option>';
+    }
+    function addNonIrisianToTeam() {
+      const nm = document.getElementById('f-nonirisian-nama').value.trim();
+      const role = document.getElementById('f-nonirisian-role').value.trim();
+      if (!nm) { showToast('Nama Non-Irisian tidak boleh kosong.', 'error'); return; }
+      if (teamMembers.find(m => m.nama === nm)) { showToast('Anggota sudah ada di list', 'error'); return; }
+      teamMembers.push({ divisi: role || 'Non-Irisian', nama: nm, nonIrisian: true });
+      renderTeamMembers();
+      document.getElementById('f-nonirisian-nama').value = '';
+      document.getElementById('f-nonirisian-role').value = '';
     }
     function removeMemberFromTeam(nama) {
       teamMembers = teamMembers.filter(m => m.nama !== nama);
@@ -2233,7 +2344,14 @@
       const cont = document.getElementById('team-members');
       if (teamMembers.length === 0) { cont.style.display = 'none'; cont.innerHTML = ''; return; }
       cont.style.display = 'flex';
-      cont.innerHTML = teamMembers.map(m => `<div style="background:var(--blue-light);color:var(--blue-dark);border:1px solid var(--blue-mid);border-radius:6px;padding:4px 8px;font-size:12px;display:flex;align-items:center;gap:6px;">${m.nama}<button type="button" onclick="removeMemberFromTeam('${m.nama.replace(/'/g, "\\'")}')" style="background:none;border:none;cursor:pointer;color:inherit;opacity:0.6;display:flex;align-items:center;padding:0 2px;">✕</button></div>`).join('');
+      cont.innerHTML = teamMembers.map(m => {
+        const isNon = m.nonIrisian;
+        const bg = isNon ? 'var(--amber-bg)' : 'var(--blue-light)';
+        const col = isNon ? 'var(--amber)' : 'var(--blue-dark)';
+        const border = isNon ? '#FDE68A' : 'var(--blue-mid)';
+        const label = isNon ? `${m.nama} <span style="opacity:0.7;font-size:10px">(${m.divisi})</span>` : `${m.nama} <span style="opacity:0.7;font-size:10px">${m.divisi}</span>`;
+        return `<div style="background:${bg};color:${col};border:1px solid ${border};border-radius:6px;padding:4px 8px;font-size:12px;display:flex;align-items:center;gap:6px;">${label}<button type="button" onclick="removeMemberFromTeam('${m.nama.replace(/'/g, "\\'")}')" style="background:none;border:none;cursor:pointer;color:inherit;opacity:0.6;display:flex;align-items:center;padding:0 2px;">✕</button></div>`;
+      }).join('');
     }
 
     async function submitForm() {
@@ -2246,7 +2364,15 @@
 
       const kategori = getRb('kategori');
       const katLomba = getRb('katLomba');
-      const namaLomba = katLomba === 'Nasional' ? document.getElementById('sel-namaLomba').value : document.getElementById('inp-namaLomba').value.trim();
+      let namaLomba;
+      if (katLomba === 'Nasional') {
+        const base = document.getElementById('sel-namaLomba').value;
+        const cabangEl = document.getElementById('sel-cabang');
+        const cabangVis = document.getElementById('f-cabang').style.display !== 'none';
+        namaLomba = (cabangVis && cabangEl.value) ? base + ' — ' + cabangEl.value : base;
+      } else {
+        namaLomba = document.getElementById('inp-namaLomba').value.trim();
+      }
       const juara = kategori === 'Menang' ? getRb('juara') : '';
       if (!namaLomba) { showToast('Lengkapi nama lomba terlebih dahulu.', 'error'); return; }
 
@@ -2395,17 +2521,123 @@
     }
 
     // ===== ANALYTICS =====
+    let anTab = 'overview';
+    function switchAnTab(tab) {
+      anTab = tab;
+      document.getElementById('an-pane-overview').style.display = tab === 'overview' ? 'block' : 'none';
+      document.getElementById('an-pane-detail').style.display = tab === 'detail' ? 'block' : 'none';
+      document.getElementById('an-tab-overview').style.fontWeight = tab === 'overview' ? '600' : '400';
+      document.getElementById('an-tab-detail').style.fontWeight = tab === 'detail' ? '600' : '400';
+      if (tab === 'detail') renderAnalyticsLombaDetail();
+    }
+
     function renderAnalytics() {
       const uniqueTeams = countUniqueTeams(DB);
       const wins = DB.filter(e => e.kategori === 'Menang').length;
-      const members = [...new Set(DB.map(e => e.nama))].length, lomba = [...new Set(DB.map(e => e.namaLomba))].length, intl = DB.filter(e => e.katLomba === 'Internasional').length;
-      document.getElementById('analytics-stats').innerHTML = [['', uniqueTeams, 'Pendaftar (Tim/Indv)'], ['', members, 'Anggota Aktif'], ['', lomba, 'Jenis Lomba'], ['accent', wins, 'Total Kemenangan'], ['', intl, 'Lomba Internasional']].map(([c, n, l]) => `<div class="stat-card ${c}"><div class="stat-num">${n}</div><div class="stat-label">${l}</div></div>`).join('');
+      const members = [...new Set(DB.map(e => e.nama))].length;
+      const lomba = [...new Set(DB.map(e => e.namaLomba))].length;
+      const intl = DB.filter(e => e.katLomba === 'Internasional').length;
+      document.getElementById('analytics-stats').innerHTML =
+        [['', uniqueTeams, 'Pendaftar (Tim/Indv)'], ['', members, 'Anggota Aktif'], ['', lomba, 'Jenis Lomba'], ['accent', wins, 'Total Kemenangan'], ['', intl, 'Lomba Internasional']]
+          .map(([c, n, l]) => `<div class="stat-card ${c}"><div class="stat-num">${n}</div><div class="stat-label">${l}</div></div>`).join('');
       renderBarChart('an-chart-div', groupBy(DB, 'divisi'), DIV_COLORS);
       renderBarChart('an-chart-kat', groupBy(DB, 'katLomba'), { 'Antar Universitas': '#0891B2', 'Nasional': '#D97706', 'Internasional': '#7C3AED' });
       const m = {};
       DB.forEach(e => { if (!m[e.nama]) m[e.nama] = { total: 0, wins: 0 }; m[e.nama].total++; if (e.kategori === 'Menang') m[e.nama].wins++; });
-      const top = Object.entries(m).sort((a, b) => b[1].total - a[1].total).slice(0, 8), maxT = Math.max(...top.map(x => x[1].total), 1);
-      document.getElementById('an-chart-wins').innerHTML = top.length ? top.map(([name, d]) => `<div class="bar-row"><div class="bar-label" title="${name}">${name.split(' ')[0]}</div><div style="flex:1"><div class="bar-track" style="margin-bottom:3px"><div class="bar-fill" style="width:${Math.round(d.total / maxT * 100)}%;background:#2563EB"></div></div><div class="bar-track"><div class="bar-fill" style="width:${Math.round(d.wins / maxT * 100)}%;background:#059669"></div></div></div><div style="font-size:10px;text-align:right;min-width:50px;color:var(--text-2)">${d.total}t/${d.wins}m</div></div>`).join('') + '<div style="display:flex;gap:14px;margin-top:8px;font-size:11px;color:var(--text-3)"><span><span style="display:inline-block;width:10px;height:10px;background:#2563EB;border-radius:2px;margin-right:4px"></span>Total</span><span><span style="display:inline-block;width:10px;height:10px;background:#059669;border-radius:2px;margin-right:4px"></span>Menang</span></div>' : '<div class="empty-state"><div class="empty-title">Belum ada data</div></div>';
+      const top = Object.entries(m).sort((a, b) => b[1].total - a[1].total).slice(0, 8);
+      const maxT = Math.max(...top.map(x => x[1].total), 1);
+      document.getElementById('an-chart-wins').innerHTML = top.length
+        ? top.map(([name, d]) => `<div class="bar-row"><div class="bar-label" title="${name}">${name.split(' ')[0]}</div><div style="flex:1"><div class="bar-track" style="margin-bottom:3px"><div class="bar-fill" style="width:${Math.round(d.total / maxT * 100)}%;background:#2563EB"></div></div><div class="bar-track"><div class="bar-fill" style="width:${Math.round(d.wins / maxT * 100)}%;background:#059669"></div></div></div><div style="font-size:10px;text-align:right;min-width:50px;color:var(--text-2)">${d.total}t/${d.wins}m</div></div>`).join('')
+        + '<div style="display:flex;gap:14px;margin-top:8px;font-size:11px;color:var(--text-3)"><span><span style="display:inline-block;width:10px;height:10px;background:#2563EB;border-radius:2px;margin-right:4px"></span>Total</span><span><span style="display:inline-block;width:10px;height:10px;background:#059669;border-radius:2px;margin-right:4px"></span>Menang</span></div>'
+        : '<div class="empty-state"><div class="empty-title">Belum ada data</div></div>';
+      if (anTab === 'detail') renderAnalyticsLombaDetail();
+    }
+
+    function renderAnalyticsLombaDetail() {
+      const el = document.getElementById('an-lomba-detail');
+      if (!el) return;
+      const q = (document.getElementById('an-srch')?.value || '').toLowerCase();
+      const fTingkat = document.getElementById('an-fil-tingkat')?.value || '';
+      const fHasil = document.getElementById('an-fil-hasil')?.value || '';
+
+      // Group by lomba
+      const byLomba = {};
+      DB.forEach(e => {
+        if (fTingkat && e.katLomba !== fTingkat) return;
+        if (fHasil && e.kategori !== fHasil) return;
+        const key = e.namaLomba + '||' + e.katLomba;
+        if (!byLomba[key]) byLomba[key] = { namaLomba: e.namaLomba, katLomba: e.katLomba, entries: [] };
+        byLomba[key].entries.push(e);
+      });
+      let lombaList = Object.values(byLomba)
+        .filter(l => !q || l.namaLomba.toLowerCase().includes(q))
+        .sort((a, b) => b.entries.length - a.entries.length);
+
+      const countEl = document.getElementById('an-lomba-count');
+      if (countEl) countEl.textContent = lombaList.length + ' lomba ditemukan';
+
+      if (!lombaList.length) {
+        el.innerHTML = '<div class="empty-state"><div class="empty-icon">🏆</div><div class="empty-title">Tidak ada data</div><div class="empty-sub">Coba ubah filter pencarian</div></div>';
+        return;
+      }
+
+      el.innerHTML = lombaList.map((l, li) => {
+        const teams = groupEntriesByTeam(l.entries);
+        const kt = l.katLomba === 'Nasional' ? 'tag-nasional' : l.katLomba === 'Internasional' ? 'tag-intl' : 'tag-uni';
+        const totalWins = l.entries.filter(e => e.kategori === 'Menang').length;
+        const totalMembers = l.entries.length;
+
+        const teamsHtml = teams.map((t, i) => {
+          const isTeam = t.length > 1;
+          const teamLabel = isTeam ? `Tim ${i + 1}` : 'Individu';
+          const teamWins = t.filter(e => e.kategori === 'Menang').length;
+
+          const memberRows = t.map(e => {
+            const isNon = !Object.keys(MEMBERS).includes(e.divisi);
+            const divColor = isNon ? { bg: 'var(--amber-bg)', col: 'var(--amber)', border: '#FDE68A' } : { bg: 'var(--blue-light)', col: 'var(--blue)', border: 'var(--blue-mid)' };
+            const divLabel = e.divisi || 'Non-Irisian';
+            const juaraBadge = e.juara
+              ? `<span style="font-size:10px;padding:2px 7px;border-radius:4px;background:#FEF3C7;color:#92400E;font-weight:500">${e.juara}</span>`
+              : '';
+            return `
+              <div style="display:flex;align-items:center;gap:8px;padding:7px 0;border-bottom:1px solid var(--border);flex-wrap:wrap">
+                <div style="width:6px;height:6px;border-radius:50%;background:${divColor.col};flex-shrink:0"></div>
+                <span style="font-size:13px;font-weight:500;flex:1;min-width:120px">${e.nama}</span>
+                <span style="font-size:11px;padding:2px 8px;border-radius:5px;background:${divColor.bg};color:${divColor.col};border:1px solid ${divColor.border};white-space:nowrap">${divLabel}</span>
+                ${juaraBadge}
+              </div>`;
+          }).join('');
+
+          return `
+            <div style="background:var(--surface);border:1px solid var(--border);border-radius:10px;overflow:hidden;margin-bottom:10px">
+              <div style="background:var(--bg2);padding:8px 14px;display:flex;align-items:center;gap:8px;border-bottom:1px solid var(--border)">
+                <span style="font-size:11px;font-weight:700;color:var(--text-2);text-transform:uppercase;letter-spacing:.06em">${teamLabel}</span>
+                <span style="font-size:11px;color:var(--text-3)">${t.length} anggota</span>
+                ${teamWins ? `<span style="margin-left:auto;font-size:11px;background:var(--green-bg);color:var(--green);padding:2px 8px;border-radius:5px;font-weight:500">🏆 ${teamWins === t.length ? 'Menang' : teamWins + ' menang'}</span>` : '<span style="margin-left:auto;font-size:11px;color:var(--text-3)">Daftar</span>'}
+              </div>
+              <div style="padding:0 14px 4px">${memberRows}</div>
+            </div>`;
+        }).join('');
+
+        return `
+          <div style="background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg);box-shadow:var(--shadow);margin-bottom:14px;overflow:hidden">
+            <!-- Lomba header -->
+            <div style="padding:16px 20px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:10px;flex-wrap:wrap">
+              <div>
+                <div style="font-size:15px;font-weight:600;margin-bottom:4px">${l.namaLomba}</div>
+                <div style="display:flex;gap:6px;align-items:center;flex-wrap:wrap">
+                  <span class="tag ${kt}">${l.katLomba}</span>
+                  <span style="font-size:11px;color:var(--text-3)">${teams.length} tim/individu</span>
+                  <span style="font-size:11px;color:var(--text-3)">·</span>
+                  <span style="font-size:11px;color:var(--text-3)">${totalMembers} anggota</span>
+                  ${totalWins ? `<span style="font-size:11px;color:var(--text-3)">·</span><span style="font-size:11px;color:var(--green);font-weight:500">🏆 ${totalWins} kemenangan</span>` : ''}
+                </div>
+              </div>
+            </div>
+            <!-- Teams -->
+            <div style="padding:14px 16px">${teamsHtml}</div>
+          </div>`;
+      }).join('');
     }
 
     // ===== UTILS =====
